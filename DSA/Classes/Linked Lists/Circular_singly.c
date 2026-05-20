@@ -57,8 +57,18 @@ void insert_end(int data)
 void insert_pos(int data, int pos)
 {
     struct node *newnode, *temp;
-    int i;
+    int i = 1;
     if (pos < 1)
+    {
+        printf("Invalid position\n");
+        return;
+    }
+    if (pos == 1)
+    {
+        insert_begin(data);
+        return;
+    }
+    if (head == NULL)
     {
         printf("Invalid position\n");
         return;
@@ -70,27 +80,13 @@ void insert_pos(int data, int pos)
         return;
     }
     newnode->data = data;
-    if (pos == 1)
-    {
-        if (head == NULL)
-        {
-            newnode->next = newnode;
-            head = newnode;
-            return;
-        }
-        temp = head;
-        while (temp->next != head)
-            temp = temp->next;
-        newnode->next = head;
-        temp->next = newnode;
-        head = newnode;
-        return;
-    }
     temp = head;
-    for (i = 1; i < pos - 1 && temp->next != head; i++)
+    while (i < pos - 1 && temp->next != head)
+    {
         temp = temp->next;
-
-    if (i != pos - 1)
+        i++;
+    }
+    if (i < pos - 1)
     {
         printf("Invalid position\n");
         free(newnode);
@@ -154,8 +150,8 @@ void delete_end()
 
 void delete_pos(int pos)
 {
-    struct node *temp = head, *deletenode;
-    int i;
+    struct node *temp, *deletenode;
+    int i = 1;
     if (head == NULL)
     {
         printf("List is empty\n");
@@ -171,10 +167,13 @@ void delete_pos(int pos)
         delete_begin();
         return;
     }
-    for (i = 1; i < pos - 1 && temp->next != head; i++)
+    temp = head;
+    while (i < pos - 1 && temp->next != head)
+    {
         temp = temp->next;
-
-    if (temp->next == head)
+        i++;
+    }
+    if (i < pos - 1 || temp->next == head)
     {
         printf("Invalid position\n");
         return;
@@ -183,23 +182,6 @@ void delete_pos(int pos)
     temp->next = deletenode->next;
     printf("Deleted element: %d\n", deletenode->data);
     free(deletenode);
-}
-
-void display()
-{
-    struct node *temp = head;
-    if (head == NULL)
-    {
-        printf("List is empty\n");
-        return;
-    }
-    printf("Circular Singly Linked List: ");
-    do
-    {
-        printf("%d -> ", temp->data);
-        temp = temp->next;
-    } while (temp != head);
-    printf("HEAD\n");
 }
 
 void status()
@@ -222,12 +204,30 @@ void status()
     printf("Number of nodes: %d\n", count);
 }
 
+void display()
+{
+    struct node *temp;
+    if (head == NULL)
+    {
+        printf("List is empty\n");
+        return;
+    }
+    temp = head;
+    printf("Circular Singly Linked List: ");
+    do
+    {
+        printf("%d -> ", temp->data);
+        temp = temp->next;
+    } while (temp != head);
+    printf("HEAD\n");
+}
+
 int main()
 {
     int choice, data, pos;
     while (1)
     {
-        printf("\n1. Insert at begin\n2. Insert at end\n3. Insert at position\n4. Delete at begin\n5. Delete at end\n6. Deletion at position\n7. Status and count\n8. Display\n9. Exit\n");
+        printf("1. Insert at begin\n2. Insert at end\n3. Insert at positon\n4. Delete at begin\n5. Delete at end\n6. Delete at pos\n7.Display\n8. Search a node\n9. Exit\n");
         printf("Enter choice: ");
         scanf("%d", &choice);
         switch (choice)
@@ -245,10 +245,8 @@ int main()
         case 3:
             printf("Enter data: ");
             scanf("%d", &data);
-
             printf("Enter position: ");
             scanf("%d", &pos);
-
             insert_pos(data, pos);
             break;
         case 4:
@@ -260,7 +258,6 @@ int main()
         case 6:
             printf("Enter position: ");
             scanf("%d", &pos);
-
             delete_pos(pos);
             break;
         case 7:
