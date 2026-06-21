@@ -2,23 +2,18 @@
 int linear_iter(int arr[], int size, int target)
 {
     for (int i = 0; i < size; i++)
-    {
-        if (arr[i] == target)
-            return i;
-    }
+        if (arr[i] == target) return i;
     return -1;
 }
 int linear_recur(int arr[], int size, int target, int index)
 {
-    if (index >= size)
-        return -1;
-    if (arr[index] == target)
-        return index;
+    if (index >= size) return -1;
+    if (arr[index] == target) return index;
     return linear_recur(arr, size, target, index + 1);
 }
 int main()
 {
-    int arr[100], size, target, result;
+    int arr[100], size, target, result, choice;
     printf("Enter size of array: ");
     scanf("%d", &size);
     printf("Enter elements of array: ");
@@ -27,22 +22,18 @@ int main()
     printf("Enter target element to search: ");
     scanf("%d", &target);
     printf("1. Iterative\n2. Recursive\nEnter choice: ");
-    int choice;
     scanf("%d", &choice);
-    switch (choice)
-    {
-    case 1:
+    
+    if (choice == 1)
         result = linear_iter(arr, size, target);
-        printf("Iterative search ");
-        break;
-    case 2:
+    else if (choice == 2)
         result = linear_recur(arr, size, target, 0);
-        printf("Recursive search ");
-        break;
-    default:
+    else
+        result = -2;
+    
+    if (result == -2)
         printf("Invalid choice\n");
-    }
-    if (result != -1)
+    else if (result != -1)
         printf("Element found at index %d\n", result);
     else
         printf("Element not found\n");
