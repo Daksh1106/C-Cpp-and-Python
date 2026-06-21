@@ -4,56 +4,28 @@
 #include <stdlib.h>
 #include <time.h>
 
-// Function to generate the computer's choice randomly
 char getComputerChoice()
 {
-    int num = rand() % 3; // Random number between 0 and 2
-
-    if (num == 0)
-        return 's'; // Snake
-    else if (num == 1)
-        return 'w'; // Water
-    else
-        return 'g'; // Gun
+    char choices[] = {'s', 'w', 'g'};
+    return choices[rand() % 3];
 }
 
-// Function to determine the winner
-// Returns: 0 = draw, 1 = you win, -1 = computer wins
 int determineWinner(char you, char comp)
 {
-    // If both choices are same → draw
     if (you == comp)
         return 0;
-
-    // Expanded logic for when the user wins
-    if (you == 's' && comp == 'w') // Snake drinks water
-    {
+    if ((you == 's' && comp == 'w') || (you == 'w' && comp == 'g') || (you == 'g' && comp == 's'))
         return 1;
-    }
-    else if (you == 'w' && comp == 'g') // Water douses gun
-    {
-        return 1;
-    }
-    else if (you == 'g' && comp == 's') // Gun kills snake
-    {
-        return 1;
-    }
-
-    // If none of the above, then the computer wins
     return -1;
 }
 
-// Function to print the full name of the choice
 void printChoice(char choice)
 {
-    if (choice == 's')
-        printf("Snake");
-    else if (choice == 'w')
-        printf("Water");
-    else if (choice == 'g')
-        printf("Gun");
-    else
-        printf("Invalid Choice");
+    char *choices[] = {"Snake", "Water", "Gun"};
+    int idx = (choice == 's') ? 0 : (choice == 'w') ? 1
+                                : (choice == 'g')   ? 2
+                                                    : -1;
+    printf("%s", idx >= 0 ? choices[idx] : "Invalid");
 }
 
 int main()
@@ -62,52 +34,42 @@ int main()
     int result;
     srand(time(0)); // Seed the random number generator with current time
     // Display welcome message and instructions
-    printf("====== Welcome to the Snake, Water, Gun Game ======\n");
-    printf("Instructions:\n");
-    printf("Type 's' for Snake\n");
-    printf("Type 'w' for Water\n");
-    printf("Type 'g' for Gun\n");
-    printf("--------------------------------------------------\n");
-    printf("Enter your choice (s/w/g): "); // Taking input from user
-    scanf(" %c", &you);                    // Space before %c helps avoid newline issues
-
-    comp = getComputerChoice();          // Get's computer's random choice
-    result = determineWinner(you, comp); // Determine game result
-
-    // Print user and computer choices
+    printf("====== Welcome to the Snake, Water, Gun Game ======\nInstructions:\nType 's' for Snake, 'w' for Water, 'g' for Gun\n--------------------------------------------------\n");
+    printf("Enter your choice (s/w/g): ");
+    scanf(" %c", &you);
+    if (you != 's' && you != 'w' && you != 'g')
+    {
+        printf("Invalid choice!\n");
+        return 0;
+    }
+    comp = getComputerChoice();
+    result = determineWinner(you, comp);
     printf("\nYou chose: ");
     printChoice(you);
     printf("\nComputer chose: ");
     printChoice(comp);
     printf("\n");
 
-    // Print result with explanation
     if (result == 0)
-    {
-        printf("Result: It's a draw! You both chose the same.\n");
-    }
+        printf("Result: It's a draw!\n");
     else if (result == 1)
     {
-        printf("Result:You win! ");
-
-        // Explain why the user won
-        if (you == 's' && comp == 'w')
+        printf("Result: You win! ");
+        if (you == 's')
             printf("Snake drinks Water.\n");
-        else if (you == 'w' && comp == 'g')
+        else if (you == 'w')
             printf("Water douses Gun.\n");
-        else if (you == 'g' && comp == 's')
+        else
             printf("Gun kills Snake.\n");
     }
     else
     {
         printf("Result: You lose! ");
-
-        // Explain why the computer won
-        if (comp == 's' && you == 'w')
+        if (comp == 's')
             printf("Snake drinks Water.\n");
-        else if (comp == 'w' && you == 'g')
+        else if (comp == 'w')
             printf("Water douses Gun.\n");
-        else if (comp == 'g' && you == 's')
+        else
             printf("Gun kills Snake.\n");
     }
     return 0;

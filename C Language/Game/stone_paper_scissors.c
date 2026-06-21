@@ -11,78 +11,57 @@ int greater(char char1, char char2)
 {
     if (char1 == char2)
         return -1;
-    else if ((char1 == 'R') && (char2 == 'S'))
+    if ((char1 == 'R' && char2 == 'S') || (char1 == 'P' && char2 == 'R') || (char1 == 'S' && char2 == 'P'))
         return 1;
-    else if ((char2 == 'R') && (char1 == 'S'))
-        return 0;
-    else if ((char1 == 'P') && (char2 == 'R'))
-        return 1;
-    else if ((char2 == 'P') && (char1 == 'S'))
-        return 0;
-    else if ((char1 == 'S') && (char2 == 'P'))
-        return 1;
-    else if ((char2 == 'S') && (char1 == 'P'))
-        return 0;
-    return -1;
+    return 0;
 }
 
 int main()
 {
     srand(time(NULL));
-    int playerScore = 0, compScore = 0, temp;
+    int playerScore = 0, compScore = 0, temp, result;
     char playerChar, compChar;
     char dict[] = {'R', 'P', 'S'};
-
-    printf("Welcome to Rock, Paper, Scissors!\n");
+    printf("Rock, Paper, Scissors! (Best of 3)\n");
 
     for (int i = 0; i < 3; i++)
     {
-        // Player input
-        printf("Your turn:\nChoose 1 for Rock, 2 for Paper, 3 for Scissors.\n");
+        printf("Round %d: Choose 1-Rock, 2-Paper, 3-Scissors: ", i + 1);
         scanf("%d", &temp);
-
         if (temp < 1 || temp > 3)
         {
-            printf("Invalid choice! Try again.\n");
-            i--; // repeat this round
+            printf("Invalid!\n");
+            i--;
             continue;
         }
-
         playerChar = dict[temp - 1];
-        printf("You chose: %c\n\n", playerChar);
-
-        // Computer input
-        temp = generateRandomNumber(3) + 1;
-        compChar = dict[temp - 1];
-        printf("Computer chose: %c\n", compChar);
-
-        // Compare
-        int result = greater(playerChar, compChar);
+        compChar = dict[generateRandomNumber(3)];
+        printf("You: %c | Computer: %c -> ", playerChar, compChar);
+        result = greater(playerChar, compChar);
         if (result == 1)
         {
             playerScore++;
-            printf("You Got it!\n");
+            printf("You win!\n");
         }
         else if (result == -1)
         {
-            printf("It's a tie!\n");
+            printf("Tie!\n");
         }
         else
         {
             compScore++;
-            printf("Computer Got it!\n");
+            printf("Computer wins!\n");
         }
-
-        printf("You: %d | Computer: %d\n\n", playerScore, compScore);
+        printf("Score: %d-%d\n\n", playerScore, compScore);
     }
 
-    // Final result
+    printf("\nFinal: ");
     if (playerScore > compScore)
-        printf("Player wins the game!\n");
+        printf("Player wins!\n");
     else if (playerScore < compScore)
-        printf("Computer wins the game!\n");
+        printf("Computer wins!\n");
     else
-        printf("It's a draw!\n");
+        printf("Draw!\n");
 
     return 0;
 }
