@@ -1,12 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
+ 
 struct node
 {
     int data;
     struct node *next;
 };
 struct node *head = NULL;
-
+ 
 void insert_begin(int data)
 {
     struct node *newnode = (struct node *)malloc(sizeof(struct node));
@@ -30,7 +31,7 @@ void insert_begin(int data)
     temp->next = newnode;
     head = newnode;
 }
-
+ 
 void insert_end(int data)
 {
     struct node *newnode = (struct node *)malloc(sizeof(struct node));
@@ -53,7 +54,7 @@ void insert_end(int data)
     temp->next = newnode;
     newnode->next = head;
 }
-
+ 
 void insert_pos(int data, int pos)
 {
     struct node *newnode, *temp;
@@ -95,7 +96,7 @@ void insert_pos(int data, int pos)
     newnode->next = temp->next;
     temp->next = newnode;
 }
-
+ 
 void delete_begin()
 {
     struct node *temp, *last;
@@ -120,7 +121,7 @@ void delete_begin()
     printf("Deleted element: %d\n", temp->data);
     free(temp);
 }
-
+ 
 void delete_end()
 {
     struct node *temp, *prev;
@@ -147,7 +148,7 @@ void delete_end()
     printf("Deleted element: %d\n", temp->data);
     free(temp);
 }
-
+ 
 void delete_pos(int pos)
 {
     struct node *temp, *deletenode;
@@ -183,7 +184,7 @@ void delete_pos(int pos)
     printf("Deleted element: %d\n", deletenode->data);
     free(deletenode);
 }
-
+ 
 void status()
 {
     struct node *temp;
@@ -203,7 +204,7 @@ void status()
     printf("List is not empty\n");
     printf("Number of nodes: %d\n", count);
 }
-
+ 
 void display()
 {
     struct node *temp;
@@ -221,13 +222,14 @@ void display()
     } while (temp != head);
     printf("HEAD\n");
 }
-
+ 
 int main()
 {
     int choice, data, pos;
     while (1)
     {
-        printf("1. Insert at begin\n2. Insert at end\n3. Insert at positon\n4. Delete at begin\n5. Delete at end\n6. Delete at pos\n7.Display\n8. Search a node\n9. Exit\n");
+        /* FIX: corrected menu labels to match actual case functions */
+        printf("\n1. Insert at begin\n2. Insert at end\n3. Insert at position\n4. Delete at begin\n5. Delete at end\n6. Delete at position\n7. Display CSLL contents\n8. Display status\n9. Exit\n");
         printf("Enter choice: ");
         scanf("%d", &choice);
         switch (choice)
@@ -261,10 +263,12 @@ int main()
             delete_pos(pos);
             break;
         case 7:
-            status();
+            /* FIX: case 7 now correctly calls display() */
+            display();
             break;
         case 8:
-            display();
+            /* FIX: case 8 now correctly calls status() */
+            status();
             break;
         case 9:
             printf("Exiting...\n");

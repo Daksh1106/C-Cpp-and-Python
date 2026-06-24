@@ -1,4 +1,5 @@
 #include <stdio.h>
+ 
 int linear_iter(int arr[], int size, int target)
 {
     for (int i = 0; i < size; i++)
@@ -8,6 +9,7 @@ int linear_iter(int arr[], int size, int target)
     }
     return -1;
 }
+ 
 int linear_recur(int arr[], int size, int target, int index)
 {
     if (index >= size)
@@ -16,9 +18,10 @@ int linear_recur(int arr[], int size, int target, int index)
         return index;
     return linear_recur(arr, size, target, index + 1);
 }
+ 
 int main()
 {
-    int arr[100], size, target, result, choice;
+    int arr[100], size, target, result = -1, choice;
     printf("Enter size of array: ");
     scanf("%d", &size);
     printf("Enter elements of array: ");
@@ -32,14 +35,15 @@ int main()
     {
     case 1:
         result = linear_iter(arr, size, target);
-        printf("Iterative search ");
+        printf("Iterative search: ");
         break;
     case 2:
         result = linear_recur(arr, size, target, 0);
-        printf("Recursive search ");
+        printf("Recursive search: ");
         break;
     default:
         printf("Invalid choice\n");
+        return 0;
     }
     if (result != -1)
         printf("Element found at index %d\n", result);

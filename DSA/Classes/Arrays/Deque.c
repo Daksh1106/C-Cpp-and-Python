@@ -1,88 +1,92 @@
-#include<stdio.h>
-#include<stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
 #define MAX 10
-int queue[MAX], front = 0, rear = -1;
+ 
+int queue[MAX];
+int front = 0, rear = -1, count = 0;
+ 
 void insert_rear(int value)
 {
-    if (rear == MAX - 1)
+    if (count == MAX)
     {
         printf("Queue Overflow\n");
         return;
     }
-    queue[++rear] = value;
+    rear = (rear + 1) % MAX;
+    queue[rear] = value;
+    count++;
     printf("Inserted element: %d\n", value);
 }
-
+ 
 void insert_front(int value)
 {
-    if (rear == MAX - 1)
+    if (count == MAX)
     {
         printf("Queue Overflow\n");
         return;
     }
-    for (int i = rear; i >= front; i--)
-        queue[i + 1] = queue[i];
+    front = (front - 1 + MAX) % MAX;
     queue[front] = value;
-    rear++;
+    count++;
     printf("Inserted element: %d\n", value);
 }
+ 
 void delete_front()
 {
-    if (front > rear)
+    if (count == 0)
     {
         printf("Queue Underflow\n");
         return;
     }
-    int value = queue[front++];
+    int value = queue[front];
+    front = (front + 1) % MAX;
+    count--;
     printf("Deleted element: %d\n", value);
 }
+ 
 void delete_rear()
 {
-    if (front > rear)
+    if (count == 0)
     {
         printf("Queue Underflow\n");
         return;
     }
-    int value = queue[rear--];
+    int value = queue[rear];
+    rear = (rear - 1 + MAX) % MAX;
+    count--;
     printf("Deleted element: %d\n", value);
 }
+ 
 void status()
 {
-    if (front > rear)
-    {
-        printf("Queue is empty\n");
-        return;
-    }
-    else if(rear== MAX-1)
-    {
-        printf("Queue is full\n");
-        return;
-    }
+    if (count == 0)
+        printf("Queue is Empty (Underflow condition)\n");
+    else if (count == MAX)
+        printf("Queue is Full (Overflow condition)\n");
     else
-    {
-        printf("Queue is neither full nor empty\n");
-        return;
-    }
+        printf("Queue is neither full nor empty. Elements: %d/%d\n", count, MAX);
 }
+ 
 void display()
 {
-    if (front > rear)
+    if (count == 0)
     {
         printf("Queue is empty\n");
         return;
     }
     printf("Queue elements: ");
-    for (int i = front; i <= rear; i++)
-        printf("%d ", queue[i]);
+    for (int i = 0; i < count; i++)
+        printf("%d ", queue[(front + i) % MAX]);
     printf("\n");
 }
+ 
 int main()
 {
     int choice, value;
     while (1)
     {
-        printf("\n1. Insert at rear\n 2. Insert at front\n 3. Delete from front\n 4. Delete from rear\n 5. Display queue\n 6. Check status\n 7. Exit\n");
-        printf("\nEnter choice: ");
+        printf("\n1. Insert at rear\n2. Insert at front\n3. Delete from front\n4. Delete from rear\n5. Display queue\n6. Check status\n7. Exit\n");
+        printf("Enter choice: ");
         scanf("%d", &choice);
         switch (choice)
         {
@@ -109,6 +113,7 @@ int main()
             status();
             break;
         case 7:
+            printf("Exiting...\n");
             exit(0);
         default:
             printf("Invalid choice\n");

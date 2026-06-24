@@ -1,7 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #define MAX 10
-int stack[MAX], top = -1;
+ 
+int stack[MAX];
+int type_flag[MAX]; /* 0 = integer, 1 = character */
+int top = -1;
+ 
 void push()
 {
     int type;
@@ -10,7 +14,7 @@ void push()
         printf("Stack Overflow\n");
         return;
     }
-    printf("Enter element to push(1=Integer, 2=Character): ");
+    printf("Enter element type (1=Integer, 2=Character): ");
     scanf("%d", &type);
     if (type == 1)
     {
@@ -18,6 +22,7 @@ void push()
         printf("Enter integer element: ");
         scanf("%d", &value);
         stack[++top] = value;
+        type_flag[top] = 0;
     }
     else if (type == 2)
     {
@@ -25,12 +30,14 @@ void push()
         printf("Enter character element: ");
         scanf(" %c", &value);
         stack[++top] = (int)value;
+        type_flag[top] = 1;
     }
     else
     {
         printf("Invalid type\n");
     }
 }
+ 
 void pop()
 {
     if (top == -1)
@@ -38,12 +45,13 @@ void pop()
         printf("Stack Underflow\n");
         return;
     }
-    int value = stack[top--];
-    if(value>=32 && value<=126) // ASCII range for printable characters
-        printf("Popped element: %c\n", (char)value);
+    if (type_flag[top] == 1)
+        printf("Popped element: %c\n", (char)stack[top]);
     else
-        printf("Popped element: %d\n", value);
+        printf("Popped element: %d\n", stack[top]);
+    top--;
 }
+ 
 void display()
 {
     if (top == -1)
@@ -51,16 +59,17 @@ void display()
         printf("Stack is empty\n");
         return;
     }
-    printf("Stack elements: ");
+    printf("Stack elements (top to bottom): ");
     for (int i = top; i >= 0; i--)
     {
-        if(stack[i]>=32 && stack[i]<=126) // ASCII range for printable characters
+        if (type_flag[i] == 1)
             printf("%c ", (char)stack[i]);
         else
             printf("%d ", stack[i]);
     }
     printf("\n");
 }
+ 
 int main()
 {
     int choice;
@@ -81,6 +90,7 @@ int main()
             display();
             break;
         case 4:
+            printf("Exiting...\n");
             exit(0);
         default:
             printf("Invalid choice\n");

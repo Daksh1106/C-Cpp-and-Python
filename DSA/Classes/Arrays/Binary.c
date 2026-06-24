@@ -1,8 +1,8 @@
 #include <stdio.h>
+ 
 int binary_iter(int arr[], int size, int target)
 {
-    int low = 0, high, mid;
-    high = size - 1;
+    int low = 0, high = size - 1, mid;
     while (low <= high)
     {
         mid = (low + high) / 2;
@@ -15,6 +15,7 @@ int binary_iter(int arr[], int size, int target)
     }
     return -1;
 }
+ 
 int binary_recur(int arr[], int size, int target, int low, int high)
 {
     if (low > high)
@@ -27,9 +28,10 @@ int binary_recur(int arr[], int size, int target, int low, int high)
     else
         return binary_recur(arr, size, target, low, mid - 1);
 }
+ 
 int main()
 {
-    int arr[100], size, target, result, i;
+    int arr[100], size, target, result = -1, choice;
     printf("Enter size of array: ");
     scanf("%d", &size);
     printf("Enter elements of array in sorted order: ");
@@ -38,17 +40,16 @@ int main()
     printf("Enter target element to search: ");
     scanf("%d", &target);
     printf("1. Iterative\n2. Recursive\nEnter choice: ");
-    int choice;
     scanf("%d", &choice);
     switch (choice)
     {
     case 1:
         result = binary_iter(arr, size, target);
-        printf("Iterative search ");
+        printf("Iterative search: ");
         break;
     case 2:
         result = binary_recur(arr, size, target, 0, size - 1);
-        printf("Recursive search ");
+        printf("Recursive search: ");
         break;
     default:
         printf("Invalid choice\n");
